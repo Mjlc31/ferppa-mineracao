@@ -1,0 +1,77 @@
+@import url('https://fonts.cdnfonts.com/css/century-gothic');
+@import url('https://fonts.cdnfonts.com/css/publica-play');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-ferppa-dark: #172122;
+  --color-ferppa-gold: #b79152;
+  --color-ferppa-light: #eae9e5;
+  
+  --font-display: "Publica Play", "Outfit", sans-serif;
+  --font-sans: "Century Gothic", "Tw Cen MT", "Futura", sans-serif;
+  --font-mono: "Century Gothic", monospace;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-ferppa-dark);
+    color: var(--color-ferppa-light);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Procedural Noise texture for premium digital physical feel */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  content: "";
+  opacity: 0.035;
+  z-index: 9999;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Custom premium scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #172122;
+}
+::-webkit-scrollbar-thumb {
+  background: #b79152;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9d7a41;
+}
+
+/* Form input underline animation */
+.animated-border {
+  position: relative;
+}
+.animated-border::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--color-ferppa-gold);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.animated-border:focus-within::after {
+  width: 100%;
+}
+
+

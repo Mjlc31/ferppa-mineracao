@@ -1,0 +1,6 @@
+{
+  "name": "Ferppa Mineração",
+  "description": "Landing page institucional da Ferppa Mineração. Entrega pontual de areia de qualidade para o seu empreendimento em Alagoas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
