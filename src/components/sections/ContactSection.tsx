@@ -61,45 +61,49 @@ export function ContactSection({ initialVolumeStr }: ContactProps) {
     try {
       const { error } = await supabase.from("leads").insert([
         {
-          nome: data.clientName,
-          empresa: data.clientCompany,
-          telefone: data.clientPhone,
-          volume: data.clientVolume,
+          name: data.clientName,
+          company: data.clientCompany || null,
+          phone: data.clientPhone,
+          notes: data.clientVolume ? `Volume solicitado: ${data.clientVolume}` : null,
+          source: "Landing Page",
+          status: "NOVO",
         },
       ]);
 
       if (error) {
         if (error.code === "42P01") {
-          toast.error("Tabela 'leads' não encontrada no Supabase. Crie a tabela primeiro.");
-          console.error(error);
+          toast.error("Tabela 'leads' não encontrada. Crie a tabela no Supabase.");
+        } else if (error.code === "PGRST205" || error.message?.includes("column")) {
+          toast.error("Estrutura da tabela incorreta. Verifique as colunas no Supabase.");
+          console.error("Schema error:", error);
         } else {
           throw error;
         }
       } else {
-        toast.success("Cotação enviada com sucesso!");
+        toast.success("Cotação enviada com sucesso! Entraremos em contato em breve.");
         setIsSubmitted(true);
       }
     } catch (error: any) {
       console.error("Supabase Error:", error);
-      toast.error(error?.message || "Houve um erro de conexão ao enviar o lead.");
+      toast.error(error?.message || "Erro de conexão. Tente novamente.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section id="cotacao-secao" className="bg-[#172122] border-t border-[#b79152]/35 py-24 relative overflow-hidden">
+    <section id="cotacao-secao" className="bg-[#172122] border-t border-[#b79152]/35 py-16 sm:py-24 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10 pointer-events-none mix-blend-color-dodge">
         <div className="absolute inset-0 bg-[radial-gradient(#b79152_1.5px,transparent_1.5px)] [background-size:32px_32px]"></div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 items-start">
           <motion.div {...sandSettleEffect} className="space-y-8">
             <div className="flex items-center space-x-2 text-[#b79152]">
               <FileText className="w-5 h-5" />
               <span className="text-xs uppercase font-extrabold tracking-widest text-[#b79152]">Comercial & Faturamento</span>
             </div>
-            <h2 className="font-display font-black text-4xl sm:text-5xl uppercase tracking-tighter text-white leading-[0.95]">
+            <h2 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tighter text-white leading-[0.95]">
               SOLICITE A COTAÇÃO OFICIAL DA SUA CARGA
             </h2>
             <p className="text-white/70 text-base leading-relaxed max-w-xl">
@@ -132,7 +136,7 @@ export function ContactSection({ initialVolumeStr }: ContactProps) {
             </div>
           </motion.div>
 
-          <div className="bg-[#1c282a] border border-[#b79152]/30 p-6 sm:p-10 relative rounded-none shadow-2xl">
+          <div className="bg-[#1c282a] border border-[#b79152]/30 p-5 sm:p-10 relative rounded-none shadow-2xl">
             {!isSubmitted ? (
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <h3 className="font-display font-black text-xl uppercase text-white mb-6 tracking-wide border-b border-white/10 pb-4 flex justify-between items-center">

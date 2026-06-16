@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { KineticText } from "../ui/KineticText";
 import { MagneticButton } from "../ui/MagneticButton";
@@ -7,8 +7,18 @@ import { useLogistics } from "../../hooks/useLogistics";
 
 export function HeroSection() {
   const { scrollY } = useScroll();
-  const heroY = useTransform(scrollY, [0, 800], [0, 200]);
-  const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // Disable parallax on mobile for performance
+  const heroY = useTransform(scrollY, [0, 800], isMobile ? [0, 0] : [0, 200]);
+  const heroOpacity = useTransform(scrollY, [0, 600], isMobile ? [1, 1] : [1, 0]);
   
   const { shipments, triggerNewShipmentSimulation } = useLogistics();
 
@@ -50,8 +60,9 @@ export function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-[-5%] right-[-5%] w-[450px] h-[450px] bg-[#b79152]/8 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute top-[5%] left-[-5%] w-[350px] h-[350px] bg-[#b79152]/4 rounded-full blur-[100px] pointer-events-none"></div>
+      {/* Orbs de luz — menores em mobile para performance */}
+      <div className="absolute bottom-[-5%] right-[-5%] w-[200px] h-[200px] sm:w-[450px] sm:h-[450px] bg-[#b79152]/8 rounded-full blur-[60px] sm:blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-[5%] left-[-5%] w-[150px] h-[150px] sm:w-[350px] sm:h-[350px] bg-[#b79152]/4 rounded-full blur-[50px] sm:blur-[100px] pointer-events-none"></div>
 
       <motion.div style={{ y: heroY, opacity: heroOpacity }} className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12 z-10 text-center flex flex-col items-center">
         <motion.div
@@ -64,7 +75,7 @@ export function HeroSection() {
           <span>Alagoas • Brasil • Mineração de Areia Premium</span>
         </motion.div>
 
-        <h1 className="font-display font-black text-5xl sm:text-7xl md:text-8xl uppercase text-white leading-[0.95] tracking-tighter mb-8 flex flex-col items-center">
+        <h1 className="font-display font-black text-4xl sm:text-7xl md:text-8xl uppercase text-white leading-[0.95] tracking-tighter mb-6 sm:mb-8 flex flex-col items-center">
           <KineticText delayOffset={0.1}>QUALIDADE E</KineticText>
           <KineticText delayOffset={0.3} className="text-[#b79152]">PONTUALIDADE.</KineticText>
         </h1>
@@ -73,7 +84,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="text-[#eae9e5]/80 font-sans font-medium text-lg sm:text-2xl max-w-2xl mb-12 tracking-wide leading-relaxed"
+          className="text-[#eae9e5]/80 font-sans font-medium text-base sm:text-2xl max-w-2xl mb-8 sm:mb-12 tracking-wide leading-relaxed px-2 sm:px-0"
         >
           "Entrega pontual de areia de qualidade para o seu empreendimento em Alagoas."
         </motion.p>
@@ -86,15 +97,15 @@ export function HeroSection() {
         >
           <MagneticButton
             href="#cotacao-secao"
-            className="px-8 py-4 bg-[#b79152] text-[#172122] font-extrabold text-sm tracking-widest uppercase hover:brightness-110 transition-all duration-300 rounded-none flex items-center justify-center space-x-3 group shadow-xl shadow-[#b79152]/10"
+            className="w-full sm:w-auto px-8 py-4 bg-[#b79152] text-[#172122] font-extrabold text-sm tracking-widest uppercase hover:brightness-110 transition-all duration-300 rounded-none flex items-center justify-center space-x-3 group shadow-xl shadow-[#b79152]/10"
           >
-            <span>Solicitar Cotação para a sua Obra</span>
+            <span>Solicitar Cotação</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </MagneticButton>
           
           <MagneticButton
             href="#beneficios"
-            className="px-8 py-4 bg-transparent border border-[#eae9e5]/30 text-[#eae9e5] font-extrabold text-sm tracking-widest uppercase hover:bg-white/5 hover:border-[#b79152] transition-all duration-300 rounded-none flex items-center justify-center"
+            className="w-full sm:w-auto px-8 py-4 bg-transparent border border-[#eae9e5]/30 text-[#eae9e5] font-extrabold text-sm tracking-widest uppercase hover:bg-white/5 hover:border-[#b79152] transition-all duration-300 rounded-none flex items-center justify-center"
           >
             <span>Ver Prova Técnica</span>
           </MagneticButton>
@@ -124,8 +135,9 @@ export function HeroSection() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {shipments.map((s) => (
+          {/* Mostrar apenas 2 entregas no mobile para não sobrecarregar */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {shipments.slice(0, isMobile ? 2 : 4).map((s) => (
               <div 
                 key={s.id} 
                 className={`p-4 border transition-all duration-300 rounded-none ${
