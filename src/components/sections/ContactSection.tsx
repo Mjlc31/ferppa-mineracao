@@ -114,8 +114,8 @@ export function ContactSection({ initialVolumeStr }: ContactProps) {
                 <div className="p-3 bg-white/5 border border-[#b79152]/30 text-[#b79152] rounded-none"><Phone className="w-5 h-5" /></div>
                 <div>
                   <h5 className="text-[10px] font-mono uppercase text-white/50 tracking-wider">Contato Imediato WhatsApp</h5>
-                  <a href="https://wa.me/5582999999999?text=Ola%20Ferppa%20Mineracao!%20Gostaria%20de%20uma%20cotacao%20de%20areia%20para%20minha%20obra." target="_blank" rel="noopener noreferrer" className="text-white font-bold hover:text-[#b79152] transition-colors duration-200">
-                    +55 (82) 99999-9999 / Alagoas
+                  <a href="https://wa.me/558282262411?text=Ola%20Ferppa%20Mineracao!%20Gostaria%20de%20uma%20cotacao%20de%20areia%20para%20minha%20obra." target="_blank" rel="noopener noreferrer" className="text-white font-bold hover:text-[#b79152] transition-colors duration-200">
+                    +55 (82) 8226-2411 / Alagoas
                   </a>
                 </div>
               </div>
@@ -225,13 +225,13 @@ export function ContactSection({ initialVolumeStr }: ContactProps) {
                 </p>
                 <div className="space-y-4 w-full">
                   <a
-                    href={`https://wa.me/5582999999999`}
+                    href={`https://wa.me/558282262411`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full bg-[#b79152] text-[#172122] font-black text-xs tracking-widest uppercase py-3.5 flex items-center justify-center space-x-2 transition-all hover:brightness-110 rounded-none"
                   >
                     <Phone className="w-3.5 h-3.5" />
-                    <span>Falar no WhatsApp Comercial</span>
+                    <span>WhatsApp Comercial (+55 82 8226-2411)</span>
                   </a>
                   <button
                     onClick={() => setIsSubmitted(false)}
